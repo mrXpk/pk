@@ -12,7 +12,8 @@ const projects = [
     link: 'https://ai-tictactoe-game.vercel.app',
     github: 'https://github.com/mrXpk/ai-tictactoe-game',
     tags: ['React', 'AI Algorithm', 'Game Development'],
-    status: 'completed'
+    status: 'completed',
+    category: 'games'
   },
   {
     title: 'X-Weather',
@@ -20,7 +21,8 @@ const projects = [
     link: 'https://x-weather-iota-five.vercel.app',
     github: 'https://github.com/mrXpk/x-weather',
     tags: ['React', 'Weather API', 'Material-UI', 'Maps Integration'],
-    status: 'completed'
+    status: 'completed',
+    category: 'apps'
   },
   {
     title: 'Space War',
@@ -28,7 +30,8 @@ const projects = [
     link: 'https://mrxpk.github.io/space-defender-x',
     github: 'https://github.com/mrXpk/space-defender-x',
     tags: ['JavaScript', 'HTML5 Canvas', 'Game Development'],
-    status: 'completed'
+    status: 'completed',
+    category: 'games'
   },
   {
     title: 'Macromail',
@@ -36,7 +39,8 @@ const projects = [
     link: 'https://macromail.vercel.app/',
     github: 'https://github.com/mrXpk/macromail',
     tags: ['Next.js', 'Email API', 'Real-time Updates'],
-    status: 'completed'
+    status: 'completed',
+    category: 'websites'
   },
   {
     title: 'LeafLens',
@@ -45,7 +49,8 @@ const projects = [
     github: '#',
     tags: ['Flutter', 'Plant.id API', 'Machine Learning', 'Firebase'],
     status: 'in-progress',
-    completion: '70%'
+    completion: '70%',
+    category: 'apps'
   },
   {
     title: 'Blink',
@@ -54,7 +59,8 @@ const projects = [
     github: '#',
     tags: ['Flutter', 'Node.js', 'MongoDB', 'Google Maps API'],
     status: 'in-progress',
-    completion: '40%'
+    completion: '40%',
+    category: 'websites'
   },
   {
     title: 'AI Code Assistant',
@@ -62,7 +68,8 @@ const projects = [
     link: '#',
     github: '#',
     tags: ['Python', 'Machine Learning', 'NLP', 'VS Code Extension'],
-    status: 'planned'
+    status: 'planned',
+    category: 'apps'
   },
   {
     title: 'EcoTrack',
@@ -70,8 +77,26 @@ const projects = [
     link: '#',
     github: '#',
     tags: ['React', 'IoT', 'Data Visualization', 'API Integration'],
-    status: 'planned'
+    status: 'planned',
+    category: 'websites'
+  },
+  {
+    title: 'Chronos',
+    description: 'A sophisticated time management application featuring a luxurious design. Includes world clock, stopwatch, and timer functionalities with elegant animations and a modern interface.',
+    link: 'https://clock-chronos.vercel.app/',
+    github: 'https://github.com/mrXpk/chronos',
+    tags: ['React', 'Material-UI', 'Framer Motion', 'Time Management'],
+    status: 'completed',
+    featured: true,
+    category: 'apps'
   }
+];
+
+const CATEGORIES = [
+  { id: 'all', label: 'All Projects' },
+  { id: 'apps', label: 'Apps' },
+  { id: 'games', label: 'Games' },
+  { id: 'websites', label: 'Websites' }
 ];
 
 const ProjectCard = ({ project, index }) => {
@@ -99,52 +124,61 @@ const ProjectCard = ({ project, index }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -5 }}
+      style={{ height: '100%' }}
     >
       <Card 
         sx={{ 
           height: '100%', 
           display: 'flex', 
           flexDirection: 'column',
-          background: 'rgba(17, 34, 64, 0.8)',
+          background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(100, 255, 218, 0.1)',
-          position: 'relative',
-          overflow: 'visible'
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            background: 'rgba(255, 255, 255, 0.08)',
+            transform: 'translateY(-5px)',
+            boxShadow: '0 10px 30px -15px rgba(0, 0, 0, 0.3)'
+          }
         }}
       >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            bgcolor: 'rgba(0,0,0,0.2)',
-            color: getStatusColor(project.status),
-            fontSize: '0.75rem',
-            textTransform: 'capitalize'
-          }}
-        >
-          {project.status} {project.completion && `(${project.completion})`}
-        </Box>
-        
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="h3" color="primary" gutterBottom>
-            {project.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
+        <CardContent sx={{ flexGrow: 1, p: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h5" component="h2" sx={{ 
+              fontWeight: 600,
+              background: project.featured ? 'linear-gradient(45deg, #64ffda, #00bcd4)' : 'inherit',
+              WebkitBackgroundClip: project.featured ? 'text' : 'none',
+              WebkitTextFillColor: project.featured ? 'transparent' : 'inherit'
+            }}>
+              {project.title}
+            </Typography>
+            <Chip
+              label={project.status}
+              size="small"
+              sx={{
+                bgcolor: `${getStatusColor(project.status)}20`,
+                color: getStatusColor(project.status),
+                borderRadius: '4px',
+              }}
+            />
+          </Box>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {project.description}
           </Typography>
-          <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
-            {project.tags.map((tag, idx) => (
-              <Chip 
-                key={idx} 
-                label={tag} 
-                size="small" 
-                sx={{ 
-                  background: 'rgba(100, 255, 218, 0.1)',
-                  color: 'primary.main'
+          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 2 }}>
+            {project.tags.map((tag, i) => (
+              <Chip
+                key={i}
+                label={tag}
+                size="small"
+                sx={{
+                  bgcolor: 'rgba(100, 255, 218, 0.1)',
+                  color: '#64ffda',
+                  mt: 1,
+                  '&:hover': {
+                    bgcolor: 'rgba(100, 255, 218, 0.2)',
+                  }
                 }}
               />
             ))}
@@ -154,10 +188,15 @@ const ProjectCard = ({ project, index }) => {
           {project.link !== '#' && (
             <Button 
               size="small" 
-              color="primary" 
+              endIcon={<LaunchIcon />}
               href={project.link}
               target="_blank"
-              endIcon={<LaunchIcon />}
+              sx={{
+                color: '#64ffda',
+                '&:hover': {
+                  bgcolor: 'rgba(100, 255, 218, 0.1)',
+                }
+              }}
             >
               Live Demo
             </Button>
@@ -165,12 +204,17 @@ const ProjectCard = ({ project, index }) => {
           {project.github !== '#' && (
             <Button
               size="small"
-              color="primary"
+              endIcon={<GitHubIcon />}
               href={project.github}
               target="_blank"
-              endIcon={<GitHubIcon />}
+              sx={{
+                color: '#64ffda',
+                '&:hover': {
+                  bgcolor: 'rgba(100, 255, 218, 0.1)',
+                }
+              }}
             >
-              Source Code
+              Source
             </Button>
           )}
         </CardActions>
@@ -180,19 +224,155 @@ const ProjectCard = ({ project, index }) => {
 };
 
 const Projects = () => {
+  const [showAll, setShowAll] = React.useState(false);
+  const [selectedCategory, setSelectedCategory] = React.useState('all');
+  
+  // Sort and filter projects
+  const filteredProjects = React.useMemo(() => {
+    let filtered = [...projects].sort((a, b) => {
+      if (a.status === 'completed' && b.status !== 'completed') return -1;
+      if (a.status !== 'completed' && b.status === 'completed') return 1;
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return 0;
+    });
+
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === selectedCategory);
+    }
+
+    return filtered;
+  }, [selectedCategory]);
+
+  const completedProjects = filteredProjects.filter(p => p.status === 'completed').slice(0, 6);
+  const remainingProjects = filteredProjects.slice(completedProjects.length);
+  const displayedProjects = showAll ? filteredProjects : completedProjects;
+
   return (
-    <Box sx={{ py: 8, minHeight: '100vh' }}>
+    <Box component="section" py={8}>
       <Container>
-        <Typography variant="h4" component="h2" gutterBottom color="primary">
-          Featured Projects
-        </Typography>
-        <Grid container spacing={4} sx={{ mt: 2 }}>
-          {projects.map((project, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
+            Projects
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+            Here are some things I've built
+          </Typography>
+        </motion.div>
+
+        {/* Category Filter Buttons */}
+        <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
+          {CATEGORIES.map((category) => (
+            <motion.div
+              key={category.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Button
+                onClick={() => {
+                  setSelectedCategory(category.id);
+                  setShowAll(false);
+                }}
+                variant={selectedCategory === category.id ? "contained" : "outlined"}
+                size="large"
+                sx={{
+                  color: selectedCategory === category.id ? 'black' : '#64ffda',
+                  bgcolor: selectedCategory === category.id ? '#64ffda' : 'transparent',
+                  borderColor: 'rgba(100, 255, 218, 0.2)',
+                  '&:hover': {
+                    bgcolor: selectedCategory === category.id ? '#64ffda' : 'rgba(100, 255, 218, 0.1)',
+                    borderColor: '#64ffda',
+                  },
+                  px: 3,
+                  py: 1,
+                  minWidth: '120px',
+                }}
+              >
+                {category.label}
+                {category.id !== 'all' && (
+                  <Typography component="span" sx={{ ml: 1, fontSize: '0.8rem', opacity: 0.8 }}>
+                    ({projects.filter(p => p.category === category.id && p.status === 'completed').length})
+                  </Typography>
+                )}
+              </Button>
+            </motion.div>
+          ))}
+        </Box>
+        
+        <Grid container spacing={3}>
+          {displayedProjects.map((project, index) => (
+            <Grid item xs={12} sm={6} md={4} key={project.title}>
               <ProjectCard project={project} index={index} />
             </Grid>
           ))}
         </Grid>
+
+        {remainingProjects.length > 0 && (
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            mt: 6,
+            gap: 2,
+            flexWrap: 'wrap'
+          }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Button
+                onClick={() => setShowAll(!showAll)}
+                variant="outlined"
+                size="large"
+                sx={{
+                  color: '#64ffda',
+                  borderColor: 'rgba(100, 255, 218, 0.2)',
+                  '&:hover': {
+                    borderColor: '#64ffda',
+                    bgcolor: 'rgba(100, 255, 218, 0.1)',
+                  },
+                  px: 4,
+                  py: 1,
+                }}
+              >
+                {showAll ? 'Show Less' : `See More (${remainingProjects.length})`}
+              </Button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <Button
+                href="https://github.com/mrXpk"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                size="large"
+                startIcon={<GitHubIcon />}
+                sx={{
+                  color: '#64ffda',
+                  borderColor: 'rgba(100, 255, 218, 0.2)',
+                  '&:hover': {
+                    borderColor: '#64ffda',
+                    bgcolor: 'rgba(100, 255, 218, 0.1)',
+                  },
+                  px: 4,
+                  py: 1,
+                }}
+              >
+                More on GitHub
+              </Button>
+            </motion.div>
+          </Box>
+        )}
       </Container>
     </Box>
   );
